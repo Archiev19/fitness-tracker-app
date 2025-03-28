@@ -834,8 +834,8 @@ def fitness_tracker(username):
             """, unsafe_allow_html=True)
         
         st.markdown("""
-            <div class="quote-container">
-                <strong>Every day is a new opportunity to improve!</strong>
+            <div class="quote-container" style="text-align: center; margin: 2.5rem 0 3.5rem 0;">
+                <strong style="font-size: 1.3rem; color: var(--text-color);">Every day is a new opportunity to improve!</strong>
             </div>
         """, unsafe_allow_html=True)
 
@@ -859,6 +859,7 @@ def fitness_tracker(username):
 
         # Quick Stats
         if not df.empty:
+            st.markdown('<div style="margin: 1rem 0;"></div>', unsafe_allow_html=True)  # Add top spacing
             col1, col2, col3 = st.columns(3)
             with col1:
                 st.metric("Starting Weight", f"{df['Weight'].iloc[0]:.1f} kg")
@@ -867,6 +868,7 @@ def fitness_tracker(username):
             with col3:
                 weight_change = df['Weight'].iloc[-1] - df['Weight'].iloc[0]
                 st.metric("Total Change", f"{weight_change:+.1f} kg")
+            st.markdown('<div style="margin: 2rem 0;"></div>', unsafe_allow_html=True)  # Add bottom spacing
         
         # Weight Entry Section
         st.markdown('<div id="add_weight"></div>', unsafe_allow_html=True)
