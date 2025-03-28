@@ -45,3 +45,6 @@ tornado==6.4.2
 typing_extensions==4.12.2
 tzdata==2025.1
 urllib3==2.3.0
+firebase-admin==6.4.0
+firebase-auth==3.0.28
+google-cloud-firestore==2.15.0

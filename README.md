@@ -2,7 +2,32 @@
 <h1>🏋️‍♂️ Fitness Tracker App</h1>
 
 <h2>📌 About</h2>
-<p>The Fitness Tracker App is an interactive web-based tool designed to help users monitor their fitness journey by tracking weight, setting goals, and analyzing progress. Built using Streamlit, it offers a seamless user experience with intuitive features, progress visualization, and multiple health dashboards.</p>
+<p>The Fitness Tracker App is an interactive web-based tool designed to help users monitor their fitness journey by tracking weight, setting goals, and analyzing progress. Built using Streamlit and Firebase, it offers a seamless user experience with intuitive features, progress visualization, and multiple health dashboards.</p>
+
+<h2>🚀 Setup Instructions</h2>
+<ol>
+  <li>Clone the repository</li>
+  <li>Install dependencies:
+    <pre>pip install -r requirements.txt</pre>
+  </li>
+  <li>Set up Firebase:
+    <ol>
+      <li>Create a new Firebase project at <a href="https://console.firebase.google.com">Firebase Console</a></li>
+      <li>Enable Authentication with Email/Password</li>
+      <li>Create a Firestore database</li>
+      <li>Generate a service account key:
+        <ol>
+          <li>Go to Project Settings > Service Accounts</li>
+          <li>Click "Generate New Private Key"</li>
+          <li>Save the JSON file as <code>firebase-credentials.json</code> in the project root</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+  <li>Run the application:
+    <pre>streamlit run app2.py</pre>
+  </li>
+</ol>
 
 <h2>✅ Key Features</h2>
 <ul>
@@ -46,6 +71,31 @@
   <li>✅ Displays average heart rate trends over runs.</li>
   <li>✅ Compares performance improvements over time.</li>
 </ul>
+
+<h2>🔒 Security</h2>
+<ul>
+  <li>Secure user authentication with Firebase Auth</li>
+  <li>Data stored in Firebase Firestore</li>
+  <li>Protected user data and sessions</li>
+  <li>Secure API endpoints</li>
+</ul>
+
+<h2>🚀 Deployment</h2>
+<p>The application can be deployed to Firebase Hosting:</p>
+<ol>
+  <li>Install Firebase CLI:
+    <pre>npm install -g firebase-tools</pre>
+  </li>
+  <li>Login to Firebase:
+    <pre>firebase login</pre>
+  </li>
+  <li>Initialize Firebase:
+    <pre>firebase init</pre>
+  </li>
+  <li>Deploy the application:
+    <pre>firebase deploy</pre>
+  </li>
+</ol>
 
 <h2>📖 How to Use</h2>
 <ol>
