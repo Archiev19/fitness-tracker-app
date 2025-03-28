@@ -53,7 +53,7 @@ A modern, feature-rich fitness tracking application built with Streamlit and Pyt
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/fitness-tracker-app.git
+git clone https://github.com/Archiev19/fitness-tracker-app.git
 cd fitness-tracker-app
 ```
 
@@ -64,18 +64,19 @@ pip install -r requirements.txt
 
 3. Run the application:
 ```bash
-streamlit run app2.py
+streamlit run streamlit_app.py
 ```
 
 ## Project Structure
 
 ```
 fitness-tracker-app/
-├── app2.py              # Main application file
+├── streamlit_app.py     # Main application file
 ├── requirements.txt     # Project dependencies
-├── docs/               # Documentation
-├── data/              # Data storage
-└── assets/            # Images and static files
+├── database.py         # Database operations
+├── docs/              # Documentation
+├── data/             # Data storage
+└── assets/           # Images and static files
 ```
 
 ## Documentation
