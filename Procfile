@@ -1,1 +1,1 @@
-web: streamlit run app_new.py --server.port $PORT --server.address 0.0.0.0 --server.maxUploadSize 200 --server.enableXsrfProtection false 
+web: streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0 --server.maxUploadSize 200 --server.enableXsrfProtection false 
