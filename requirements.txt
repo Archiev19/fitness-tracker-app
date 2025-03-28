@@ -2,8 +2,6 @@ streamlit==1.31.1
 pandas==2.2.0
 numpy==1.26.3
 plotly==5.18.0
-pillow==10.2.0
+Pillow==10.2.0
 matplotlib==3.8.2
-datetime
-sqlite3
 requests==2.31.0
