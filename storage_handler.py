@@ -1,88 +1,59 @@
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
+import os
+import json
+import shutil
 from datetime import datetime
-import streamlit as st
+from pathlib import Path
 
-# Configure Cloudinary
-def init_cloudinary():
-    # Check if running on Streamlit Cloud (using secrets)
-    if 'cloudinary' in st.secrets:
-        # Use Streamlit secrets
-        cloudinary.config(
-            cloud_name = st.secrets['cloudinary']['cloud_name'],
-            api_key = st.secrets['cloudinary']['api_key'],
-            api_secret = st.secrets['cloudinary']['api_secret']
-        )
-    else:
-        # Use hardcoded credentials (not recommended for production)
-        cloudinary.config(
-            cloud_name = "your_cloud_name",  # You'll get this after signing up
-            api_key = "your_api_key",        # You'll get this after signing up
-            api_secret = "your_api_secret"   # You'll get this after signing up
-        )
-
-def upload_file(file, user_id):
-    """Upload a file to Cloudinary"""
-    try:
-        # Initialize Cloudinary
-        init_cloudinary()
+class StorageHandler:
+    def __init__(self, base_dir="data"):
+        self.base_dir = Path(base_dir)
+        self.backup_dir = self.base_dir / "backups"
+        self.ensure_directories()
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        public_id = f"fitness_tracker/{user_id}/{timestamp}"
+    def ensure_directories(self):
+        """Create necessary directories if they don't exist."""
+        self.base_dir.mkdir(exist_ok=True)
+        self.backup_dir.mkdir(exist_ok=True)
         
-        # Upload file to Cloudinary
-        result = cloudinary.uploader.upload(
-            file,
-            public_id=public_id,
-            folder="fitness_tracker",
-            resource_type="auto"
-        )
+    def save_data(self, data, filename):
+        """Save data to a JSON file with automatic backup."""
+        file_path = self.base_dir / filename
         
-        return {
-            'success': True,
-            'url': result['secure_url'],
-            'public_id': result['public_id']
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': str(e)
-        }
-
-def delete_file(public_id):
-    """Delete a file from Cloudinary"""
-    try:
-        # Initialize Cloudinary
-        init_cloudinary()
+        # Create backup of existing file if it exists
+        if file_path.exists():
+            backup_name = f"{filename}.{datetime.now().strftime('%Y%m%d_%H%M%S')}.bak"
+            backup_path = self.backup_dir / backup_name
+            shutil.copy2(file_path, backup_path)
+            
+        # Save new data
+        with open(file_path, 'w') as f:
+            json.dump(data, f, indent=4)
+            
+    def load_data(self, filename):
+        """Load data from JSON file."""
+        file_path = self.base_dir / filename
+        if file_path.exists():
+            with open(file_path, 'r') as f:
+                return json.load(f)
+        return {}
         
-        result = cloudinary.uploader.destroy(public_id)
-        return {
-            'success': True,
-            'result': result
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': str(e)
-        }
-
-def get_user_files(user_id):
-    """Get all files for a specific user"""
-    try:
-        # Initialize Cloudinary
-        init_cloudinary()
+    def delete_data(self, filename):
+        """Delete data file with backup."""
+        file_path = self.base_dir / filename
+        if file_path.exists():
+            # Create backup before deletion
+            backup_name = f"{filename}.{datetime.now().strftime('%Y%m%d_%H%M%S')}.del.bak"
+            backup_path = self.backup_dir / backup_name
+            shutil.copy2(file_path, backup_path)
+            file_path.unlink()
+            
+    def list_files(self):
+        """List all data files."""
+        return [f.name for f in self.base_dir.glob("*.json") if f.is_file()]
         
-        result = cloudinary.api.resources(
-            type="upload",
-            prefix=f"fitness_tracker/{user_id}/"
-        )
-        return {
-            'success': True,
-            'files': result['resources']
-        }
-    except Exception as e:
-        return {
-            'success': False,
-            'error': str(e)
-        } 
+    def cleanup_old_backups(self, days=30):
+        """Remove backups older than specified days."""
+        cutoff = datetime.now().timestamp() - (days * 24 * 60 * 60)
+        for backup_file in self.backup_dir.glob("*.bak"):
+            if backup_file.stat().st_mtime < cutoff:
+                backup_file.unlink() 
